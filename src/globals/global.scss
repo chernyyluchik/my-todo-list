@@ -1,0 +1,57 @@
+:root {
+  /* dark shade color set */
+
+  --dark-shade-hue:           238;
+  --dark-shade-100per:        hsla(var(--dark-shade-hue), 35%, 19%, 1);
+  --dark-shade-75per:         hsla(var(--dark-shade-hue), 35%, 19%, .75);
+  --dark-shade-50per:         hsla(var(--dark-shade-hue), 35%, 19%, .50);
+  --dark-shade-25per:         hsla(var(--dark-shade-hue), 35%, 19%, .25);
+  --dark-shade-5per:         hsla(var(--dark-shade-hue), 35%, 19%, .05);
+
+  /* purple color set */
+
+  --purple-hue:               259;
+  --purple-100per:            hsla(var(--purple-hue), 100%, 81%, 1);
+  /* green color set */
+
+  --green-hue:                145;
+  --green-100per:             hsla(var(--green-hue), 50%, 62%, 1);
+
+  /* red color set */
+
+  --red-hue:                  5;
+  --red-100per:               hsla(var(--red-hue), 84%, 40%, 1);
+
+  /* custom outline style */
+
+  --outline:                  1px dashed var(--dark-shade-75per); 
+
+  /* box-shadow */
+
+  --shadow-1:                 0 10px 20px var(--dark-shade-5per);
+
+  /* border */
+
+  --border-dark-shade-25per:  1px solid var(--dark-shade-25per);
+  --border-dark-shade-50per:  1px solid var(--dark-shade-50per);
+  --border-dark-shade-75per:  1px solid var(--dark-shade-75per);
+
+  /* fonts */
+
+  --primary-font:                normal 14px "Montserrat", sans-serif;
+  --heading-font:                normal 30px "Montserrat", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}

@@ -1,0 +1,32 @@
+.button {
+  $grandparent: &;
+
+  padding: 10px;
+  height: max-content;
+  width: max-content;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  &__icon {
+    fill: var(--dark-shade-50per);
+    transition: fill .3s;
+  }
+
+  &:focus {
+    outline: var(--outline);
+    outline-offset: 2px;
+
+    & #{$grandparent}__icon {
+      fill: var(--focus-color);
+      transition: fill .3s;
+    }
+  }
+
+  &:hover {
+    & #{$grandparent}__icon {
+      fill: var(--hover-color);
+      transition: fill .3s;
+    }
+  }
+}
