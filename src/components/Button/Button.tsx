@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { hot } from 'react-hot-loader';
+import {hot} from 'react-hot-loader';
 import './Button.scss';
 
 interface ButtonProps {
@@ -7,10 +7,10 @@ interface ButtonProps {
   title: string,
   className: string,
   type: 'submit' | 'reset' | 'button',
-  icon: Function,
+  icon: React.ReactNode,
   hoverColor: string,
   focusColor: string,
-  onClick: Function
+  onClick: () => void
 }
 
 interface ButtonState {
@@ -23,28 +23,31 @@ class Button extends React.Component<ButtonProps, ButtonState> {
     icon: 'some icon',
     className: 'button',
     type: 'button',
-    onClick: () => {},
+    onClick: () => {
+    },
     title: 'some title',
     hoverColor: 'var(--dark-shade-75per)',
     focusColor: 'var(--dark-shade-75per)'
   }
 
-  private handleClick = () => {
-    this.props.onClick();
-  }
-  
   public render() {
-    var style = { 
-      "--hover-color": this.props.hoverColor,
-      "--focus-color": this.props.focusColor
-    } as React.CSSProperties;
+    const {
+      type,
+      className,
+      label,
+      icon,
+      onClick,
+    } = this.props;
 
     return (
-      <button type={this.props.type} className={this.props.className} title={this.props.label} onClick={this.handleClick} style={style}>
-        <span className="visually-hidden">
-          {this.props.label}
-        </span>
-        {this.props.icon({className: 'button__icon'})}
+      <button
+        type={type}
+        className={className}
+        title={label}
+        onClick={onClick}
+      >
+        <span className="visually-hidden">{label}</span>
+        {icon({className: 'button__icon'})}
       </button>
     );
   }

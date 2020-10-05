@@ -16,8 +16,7 @@ class Todo extends React.Component<TodoProps> {
     return (
       <section className="todo">
         <h1 className="todo__heading">My to do list</h1>
-        <List 
-        itemList={this.props.itemList}/>
+        <List itemList={this.props.itemList}/>
       </section>
     );
   }

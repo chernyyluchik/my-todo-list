@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import Todo from './components/Todo/Todo';
+import List from './components/List/List';
 import './globals/global.scss';
 import './globals/fonts.scss';
 
 const rootEl = document.getElementById('root');
 
-render(<Todo />, rootEl);
+render(<List />, rootEl);

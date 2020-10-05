@@ -8,14 +8,11 @@ interface InputProps {
   name: string,
   button: unknown,
   autofocus: boolean,
-  onSubmit: Function
+  onSubmit: Function,
+  value: string,
 }
 
-interface InputState {
-  value: string
-}
-
-class Input extends React.Component<InputProps, InputState> {
+class Input extends React.Component<InputProps> {
   static defaultProps = {
     icon: 'some icon',
     placeholder: 'some placeholder',
@@ -24,38 +21,42 @@ class Input extends React.Component<InputProps, InputState> {
     onSubmit: () => {}
   }
 
-  private constructor(props) {
-    super(props);
-    this.state = {
-      value: this.props.children ? this.props.children as string : ''
-    };
+  private handleSubmit = e => {
+    e.preventDefault();
+
+    this.props.onSubmit(this.props.value);
+    this.setState({value: ''});
   }
 
-  private handleSubmit = (event) => {
-    this.props.onSubmit(this.state.value);
-    this.setState({
-      value: ''
-    })
-
-    event.preventDefault();
-  }
-
-  private handleChange = (event) => {
-    this.setState({value: event.target.value});
-  }
+  private handleChange = e => this.setState({value: e.target.value});
 
   public render() {
+    const {
+      name,
+      placeholder,
+      title,
+      value,
+      autofocus,
+    } = this.props;
+
     return (
-      <form className="input" onSubmit={this.handleSubmit}>
+      <form
+        className="input"
+        onSubmit={this.handleSubmit}
+      >
         <input 
           className="input__text-field" 
-          name={this.props.name} 
-          placeholder={this.props.placeholder} 
-          autoComplete="off" title={this.props.title} 
-          type="text" value={this.state.value} 
+          name={name}
+          placeholder={placeholder}
+          autoComplete="off"
+          title={title}
+          type="text"
+          value={value}
           onChange={this.handleChange}
           required 
-          autoFocus={this.props.autofocus} />
+          autoFocus={autofocus}
+        />
+
         {this.props.button}
       </form>
     );

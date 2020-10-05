@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { hot } from 'react-hot-loader';
+import {hot} from 'react-hot-loader';
 import Item from '../Item/Item';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -7,22 +7,30 @@ import CreateIcon from './assets/library_add-24px.svg';
 import './List.scss';
 
 interface ListProps {
-  itemList: Array<{id: number, task: string, stage: 'draft' | 'inProgress' | 'done' | 'expired', termDate: string, complitionDate: string} | null>
+  itemList: Array<{
+    id: number,
+    task: string,
+    stage: 'draft' | 'inProgress' | 'done' | 'expired',
+    termDate: string,
+    complitionDate: string } | null>
 }
 
 interface ListState {
-  itemList: Array<{id: number, task: string, stage: 'draft' | 'inProgress' | 'done' | 'expired', termDate: string, complitionDate: string} | null>
+  itemList: Array<{
+    id: number,
+    task: string,
+    stage: 'draft' | 'inProgress' | 'done' | 'expired',
+    termDate: string,
+    complitionDate: string } | null>
 }
 
 class List extends React.Component<ListProps, ListState> {
-  private constructor(props) {
-    super(props);
-    this.state = {
-      itemList: this.props.itemList
-    }
+  state = {
+    itemList: [],
+    newTask: '',
   }
 
-  private handleUnmount = (id: number) => {
+  private deleteTask = (id: number) => {
     this.setState({
       itemList: this.state.itemList.filter((item) => item.id !== id)
     })
@@ -30,44 +38,58 @@ class List extends React.Component<ListProps, ListState> {
 
   private handleStageChange = (id: number, stage: 'draft' | 'inProgress' | 'done') => {
     this.setState({
-      itemList: this.state.itemList.map((item) => { if (item.id === id) item.stage = stage; return item;})
-    })
-
-    console.log(stage)
+      itemList: this.state.itemList.reduce((acc, current) =>
+        current.id === id
+          ? [...acc, {...current, stage}]
+          : [...acc, {...current}], [])
+    });
   }
 
   private handleAdd = (result: string) => {
-    const itemList = this.state.itemList;
-
-    itemList.push({
+    this.setState({
+      itemList: [...this.state.itemList, {
         id: ++this.state.itemList.length,
         task: result,
         stage: 'draft',
         termDate: 'none',
         complitionDate: 'none'
-    });
-
-    this.setState({
-      itemList: itemList
+      }]
     })
   }
 
   private sortItemList() {
-    const order = ['draft', 'inProgress', 'done', 'expired'];
+    const order = ['inProgress', 'done', 'expired'];
 
-    this.state.itemList.sort((a, b) => {
-      console.log(a.stage, order.indexOf(a.stage))
-      return order.indexOf(a.stage) - order.indexOf(b.stage)
-    })
+    return [...this.state.itemList]
+      .sort((a, b) => order.indexOf(a.stage) - order.indexOf(b.stage))
   }
 
   public render() {
+    const {newTask} = this.state;
+
     return (
       <ul className="list">
-        <li><Input name="create" button={<Button type="submit" label="Create" title="Create" icon={CreateIcon} />} placeholder="Create task" title="Create task" onSubmit={this.handleAdd}/></li>
-        {this.sortItemList()}
-        {this.state.itemList
-        .map((item) => <Item key={item.id} id={item.id} unmountMe={this.handleUnmount} onStageChange={this.handleStageChange} stage={item.stage} termDate={item.termDate} complitionDate={item.complitionDate}>{item.task}</Item>)}
+        <li>
+          <Input
+            name="create"
+            button={<Button type="submit" label="Create" title="Create" icon={CreateIcon}/>}
+            placeholder="Create task"
+            title="Create task"
+            onSubmit={this.handleAdd}
+            value={newTask}
+          />
+        </li>
+
+        {this.sortItemList()
+          .map((item) => <Item
+            key={item.id}
+            id={item.id}
+            onDelete={() => this.deleteTask(item.id)}
+            onChange={stage => this.handleStageChange(item.id, stage)}
+            stage={item.stage}
+            endDate={item.termDate}
+            completionDate={item.complitionDate}
+          >{item.task}</Item>)}
       </ul>
     );
   }
