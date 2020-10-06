@@ -1,31 +1,31 @@
 .item {
   $grandparent: &;
 
-  min-height: 44px;
+  min-height: 3rem;
   display: flex;
   align-items: center;
   color: var(--dark-shade-50per);
   font: var(--primary-font);
 
-  &_done {
+  &_stage_done {
     color: var(--green-100per);
   }
 
-  &_in-progress {
+  &_stage_in-progress {
     color: var(--dark-shade-100per);
   }
 
-  &_expired {
+  &_stage_expired {
     color: var(--red-100per);
   }
 
   &__task {
-    padding: 0 10px;
+    padding: 0 .5rem;
     flex: 1;
     white-space: pre-line; 
   }
 
   &__status {
-    padding: 0 10px;
+    padding: 0 .5rem;
   }
 }

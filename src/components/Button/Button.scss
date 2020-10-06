@@ -1,32 +1,57 @@
 .button {
-  $grandparent: &;
-
-  padding: 10px;
-  height: max-content;
-  width: max-content;
+  padding: .5rem;
+  display: flex;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  transition: opacity .3s;
 
-  &__icon {
+  &__label {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+  }
+
+  & svg {
     fill: var(--dark-shade-50per);
-    transition: fill .3s;
+    transition: scale .1s, fill .3s;
+  }
+
+  :active {
+    opacity: .5;
+    transition: opacity .3s;
+  }
+
+  &:hover, &:focus {
+    & svg {
+      fill: var(--dark-shade-75per);
+      transform: scale(1.1);
+      transition: scale .1s, fill .3s;
+    }
+  }
+
+  &_color_red:hover, &_color_red:focus {
+    & svg {
+      fill: var(--red-100per);
+    }
+  }
+
+  &_color_green:hover, &_color_green:focus {
+    & svg {
+      fill: var(--green-100per);
+    }
+  }
+
+  &_color_purple:hover, &_color_purple:focus {
+    & svg {
+      fill: var(--purple-100per);
+    }
   }
 
   &:focus {
     outline: var(--outline);
     outline-offset: 2px;
-
-    & #{$grandparent}__icon {
-      fill: var(--focus-color);
-      transition: fill .3s;
-    }
-  }
-
-  &:hover {
-    & #{$grandparent}__icon {
-      fill: var(--hover-color);
-      transition: fill .3s;
-    }
   }
 }

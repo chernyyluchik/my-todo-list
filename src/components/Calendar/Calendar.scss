@@ -1,0 +1,123 @@
+.calendar {
+  position: relative;
+
+  &__datepicker {
+    position: absolute;
+    right: -190%;
+    z-index: 1;
+    padding-top: 1rem;
+
+    &_hidden {
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0);
+      transition: transform ease .3s, opacity .3s, visibility step-end .4s;
+    }
+
+    &_visible {
+      visibility: visible;  
+      opacity: 1;
+      transform: scale(1);
+      transition: transform .3s, opacity .3s;
+    }
+  }
+}
+
+.DayPicker {
+  position: relative;
+  width: 90vw;
+  max-width: 340px;
+  background-color: white;
+  font: var(--primary-font);
+
+  &-wrapper {
+    padding: 1rem .5rem .5rem .5rem;
+    border: var(--border-dark-shade-25per);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+
+    &:focus {
+      outline: var(--outline);
+      outline-offset: 2px;
+    }
+  }
+
+  &-Month {
+    display: grid;
+    row-gap: 1rem;
+  }
+
+  &-NavBar {
+    position: absolute;
+    top: .5rem;
+    right: 1rem;
+    display: flex;
+  }
+
+  &-Caption {
+    padding-left: .7rem;
+    color: var(--dark-shade-100per);
+    font-size: 1.5rem;
+  }
+
+  &-WeekdaysRow {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+
+  &-Weekday {
+    padding: calc(8.41111111111%/2) 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark-shade-50per);
+  }
+
+  &-Week {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+
+  &-Day {
+    padding: calc(50% - 18px / 2) 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: var(--dark-shade-75per);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: var(--outline);
+      outline-offset: 2px;
+    }
+
+    &--disabled {
+      cursor: default;
+      pointer-events: none;
+      color: var(--dark-shade-50per);
+    }
+
+    &--outside {
+      color: var(--dark-shade-25per);
+    }
+
+    &--today {
+      background: var(--green-gradient);
+      color: white;
+      font-weight: bold;
+    }
+
+    &--selected {
+      background: var(--purple-gradient);
+      color: white;
+      font-weight: bold;
+    }
+  }
+}

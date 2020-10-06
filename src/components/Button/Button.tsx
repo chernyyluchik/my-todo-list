@@ -2,52 +2,49 @@ import * as React from 'react';
 import {hot} from 'react-hot-loader';
 import './Button.scss';
 
-interface ButtonProps {
+interface IProps {
   label: string,
-  title: string,
-  className: string,
   type: 'submit' | 'reset' | 'button',
+  color: 'red' | 'green' | 'purple' | false,
+  ariaExpanded: boolean | null,
   icon: React.ReactNode,
-  hoverColor: string,
-  focusColor: string,
-  onClick: () => void
+  onClick: (e) => void
 }
 
-interface ButtonState {
-  value: string
-}
-
-class Button extends React.Component<ButtonProps, ButtonState> {
+class Button extends React.Component<IProps> {
   static defaultProps = {
     label: 'some label',
-    icon: 'some icon',
-    className: 'button',
     type: 'button',
-    onClick: () => {
-    },
-    title: 'some title',
-    hoverColor: 'var(--dark-shade-75per)',
-    focusColor: 'var(--dark-shade-75per)'
+    color: false,
+    icon: 'some icon',
+    ariaExpanded: null,
+    onClick: (e) => {
+    }
   }
 
   public render() {
     const {
-      type,
-      className,
       label,
+      type,
       icon,
+      color,
+      ariaExpanded,
       onClick,
     } = this.props;
+
+    let classList = 'button';
+    classList = color ? `${classList} button_color_${color}` : classList;
 
     return (
       <button
         type={type}
-        className={className}
+        className={classList}
         title={label}
-        onClick={onClick}
+        aria-expanded={ariaExpanded}
+        onClick={e => onClick(e)}
       >
-        <span className="visually-hidden">{label}</span>
-        {icon({className: 'button__icon'})}
+        <span className="button__label">{label}</span>
+        {icon}
       </button>
     );
   }

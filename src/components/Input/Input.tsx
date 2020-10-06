@@ -2,29 +2,41 @@ import * as React from 'react';
 import { hot } from 'react-hot-loader';
 import './Input.scss';
 
-interface InputProps {
-  placeholder: string,
-  title: string,
+interface IProps {
   name: string,
-  button: unknown,
-  autofocus: boolean,
-  onSubmit: Function,
+  title: string,
   value: string,
+  placeholder: string,
+  autofocus: boolean,
+  button: React.ReactNode | null,
+  buttons: Array<React.ReactNode> | null,
+  onSubmit: (value: string) => void
 }
 
-class Input extends React.Component<InputProps> {
+interface IState {
+  value: string
+}
+
+class Input extends React.Component<IProps, IState> {
+  state = {
+    value: this.props.value
+  }
+
   static defaultProps = {
-    icon: 'some icon',
-    placeholder: 'some placeholder',
+    name: 'some name',
     title: 'some title',
+    value: '',
+    placeholder: 'some placeholder',
     autofocus: false,
+    button: null,
+    buttons: null,
     onSubmit: () => {}
   }
 
   private handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.props.value);
+    this.props.onSubmit(this.state.value);
     this.setState({value: ''});
   }
 
@@ -33,31 +45,34 @@ class Input extends React.Component<InputProps> {
   public render() {
     const {
       name,
-      placeholder,
       title,
-      value,
+      placeholder,
       autofocus,
+      button,
+      buttons
     } = this.props;
+
+    const {value} = this.state;
 
     return (
       <form
-        className="input"
         onSubmit={this.handleSubmit}
+        className="input"
       >
         <input 
-          className="input__text-field" 
           name={name}
-          placeholder={placeholder}
-          autoComplete="off"
           title={title}
-          type="text"
           value={value}
-          onChange={this.handleChange}
-          required 
+          placeholder={placeholder}
           autoFocus={autofocus}
+          onChange={this.handleChange}
+          className="input__text-field" 
+          type="text"
+          autoComplete="off"
+          required 
         />
 
-        {this.props.button}
+        {buttons ? buttons.map((item) => item) : button}
       </form>
     );
   }
