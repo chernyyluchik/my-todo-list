@@ -93,7 +93,7 @@ class List extends React.Component<IProps, IState> {
   private addTask = (task: string) => {
     this.setState({
       itemList: [...this.state.itemList, {
-        id: this.state.itemList.length,
+        id: this.state.itemList.length + 1,
         task,
         stage: 'inProgress',
         isEdit: false,
