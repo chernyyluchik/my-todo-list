@@ -59,7 +59,7 @@ class List extends React.Component<IProps, IState> {
     });
   }
 
-  private selectTerm = (id: number, endDate: number) => {
+  private setEndDate = (id: number, endDate: number) => {
     this.setState({
       itemList: this.state.itemList.reduce((acc, current) =>
         current.id === id
@@ -135,7 +135,7 @@ class List extends React.Component<IProps, IState> {
               isEdit={item.isEdit}
               onEdit={() => this.editTask(item.id)}
               onDelete={() => this.deleteTask(item.id)}
-              onTermSelect={(term: number) => this.selectTerm(item.id, term)}
+              onEndDateSelect={(term: number) => this.setEndDate(item.id, term)}
               onCompletion={(stage: 'done' | 'expired') => this.setCompletion(item.id, stage)}
               stage={item.stage}
               endDate={item.endDate}

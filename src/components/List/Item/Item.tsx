@@ -15,20 +15,11 @@ interface Props {
   isEdit: boolean,
   onEdit: () => void,
   onDelete: () => void,
-  onTermSelect: (term: number) => void,
+  onEndDateSelect: (endDate: number) => void,
   onCompletion: (stage: string) => void,
 }
 
 class Item extends React.Component<Props> {
-  private handleComplete = () => {
-    const {
-      onCompletion,
-      endDate
-    } = this.props;
-    
-    endDate ? onCompletion(this.getDaysLeft(endDate) > 0 ? 'done' : 'expired') : onCompletion('done');
-  }
-
   private getFormatedDate = (date: number) => new Intl.DateTimeFormat('en', {month: 'short', day: 'numeric', year: 'numeric'}).format(date);
 
   private getDaysLeft = (date: number) => Math.round((date - Date.now())/(1000*24*60*60));
@@ -69,13 +60,22 @@ class Item extends React.Component<Props> {
     }
   }
 
+  private handleComplete = () => {
+    const {
+      onCompletion,
+      endDate
+    } = this.props;
+    
+    endDate ? onCompletion(this.getDaysLeft(endDate) > 0 ? 'done' : 'expired') : onCompletion('done');
+  }
+
   private renderContent = () => {
     const {
       stage,
       endDate,
       children,
       onDelete,
-      onTermSelect,
+      onEndDateSelect,
       onEdit
     } = this.props;
 
@@ -95,7 +95,7 @@ class Item extends React.Component<Props> {
           {!endDate 
             && <Calendar 
               key="calendar" 
-              onDaySelect={(term: number) => onTermSelect(term)} 
+              onDaySelect={(endDate: number) => onEndDateSelect(endDate)} 
             />}
           <Button
             label="Edit task"

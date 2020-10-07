@@ -23,16 +23,11 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   static defaultProps = {
-    onDaySelect: () => {}
+    onDaySelect: () => {
+    }
   }
 
-  private toggleDatepicker = e => {
-    const self = e.currentTarget
-    const expanded = !JSON.parse(self.getAttribute('aria-expanded'));
-    self.setAttribute('aria-expanded', expanded);
-
-    this.setState({showDatepicker: !this.state.showDatepicker});
-  }
+  private toggleDatepicker = e => this.setState({showDatepicker: !this.state.showDatepicker});
 
   private getTomorrow() {
     const today = new Date();
@@ -56,15 +51,20 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const {showDatepicker} = this.state;
+    const {
+      showDatepicker,
+      selectedDay
+    } = this.state;
 
     const NavBar = ({onPreviousClick, onNextClick}) => <div className="DayPicker-NavBar">
       <Button
+        type="button"
         label="Previous month"
         onClick={() => onPreviousClick()}
         icon={<ArrowBackIcon />}
       />
       <Button
+        type="button"
         label="Next month"
         onClick={() => onNextClick()}
         icon={<ArrowForvardIcon />}
@@ -77,7 +77,7 @@ class Calendar extends React.Component<IProps, IState> {
           type="button" 
           label="Show calendar" 
           color="purple" 
-          ariaExpanded={false}
+          ariaExpanded={showDatepicker}
           icon={<CalendarIcon />} 
           onClick={e => this.toggleDatepicker(e)} 
         />
@@ -86,7 +86,7 @@ class Calendar extends React.Component<IProps, IState> {
             navbarElement={NavBar} 
             showOutsideDays={true}
             disabledDays={{before: this.getTomorrow()}}
-            selectedDays={this.state.selectedDay}
+            selectedDays={selectedDay}
             onDayClick={this.handleDayClick}
           />
         </div>

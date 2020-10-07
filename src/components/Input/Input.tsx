@@ -30,7 +30,8 @@ class Input extends React.Component<IProps, IState> {
     autofocus: false,
     button: null,
     buttons: null,
-    onSubmit: () => {}
+    onSubmit: () => {
+    }
   }
 
   private handleSubmit = e => {
