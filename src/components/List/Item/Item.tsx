@@ -6,12 +6,13 @@ import Calendar from '../../Calendar/Calendar';
 import RemoveIcon from '../assets/close-24px.svg';
 import EditIcon from '../assets/edit-24px.svg';
 import CheckIcon from '../assets/check-24px.svg';
+import { compileFunction } from "vm";
 
-interface Props {
+interface IProps {
   id: number,
   stage: 'inProgress' | 'done' | 'expired',
-  endDate: number | undefined,
-  completionDate: number | undefined,
+  endDate: number | null,
+  completionDate: number | null,
   isEdit: boolean,
   onEdit: () => void,
   onDelete: () => void,
@@ -19,7 +20,7 @@ interface Props {
   onCompletion: (stage: string) => void,
 }
 
-class Item extends React.Component<Props> {
+class Item extends React.Component<IProps> {
   private getFormatedDate = (date: number) => new Intl.DateTimeFormat('en', {month: 'short', day: 'numeric', year: 'numeric'}).format(date);
 
   private getDaysLeft = (date: number) => Math.round((date - Date.now())/(1000*24*60*60));
@@ -30,43 +31,48 @@ class Item extends React.Component<Props> {
     return plurals[rule];
   }
 
-  private getStatus(stage: 'inProgress' | 'done' | 'expired', endDate: number) {
+  private getStatus() {
+    const {
+      stage,
+      endDate,
+      completionDate
+    } = this.props;
+
     const formattedEndDate = this.getFormatedDate(endDate);
-    const formattedNowDate = this.getFormatedDate(Date.now());
+    const formattedCompletionDate = this.getFormatedDate(completionDate);
     const daysLeft = this.getDaysLeft(endDate);
-        const plurals = {
-          one: 'day',
-          other: 'days'
-        };
-        const dayPluralRule = this.getPluralRule(daysLeft, plurals);
+    const plurals = {
+      one: 'day',
+      other: 'days'
+    };
+    const dayPluralRule = this.getPluralRule(daysLeft, plurals);
 
     switch (stage) {
       case 'inProgress':
-        const status = endDate
+        return endDate
           ? daysLeft > 10
             ? `Until ${formattedEndDate}`
             : daysLeft > 0
               ? `${daysLeft} ${dayPluralRule} left`
               : 'Expired'
-          : ''
-        
-        return status;
+          : '';
       
         case 'done':
-          return `Done at ${formattedNowDate}`
+          return `Done at ${formattedCompletionDate}`;
         
         case 'expired':
-          return `Expired from ${formattedEndDate}`
+          return `Expired from ${formattedEndDate}`;
     }
   }
 
   private handleComplete = () => {
     const {
       onCompletion,
+      completionDate,
       endDate
     } = this.props;
     
-    endDate ? onCompletion(this.getDaysLeft(endDate) > 0 ? 'done' : 'expired') : onCompletion('done');
+    endDate ? onCompletion(completionDate - endDate > 0 ? 'done' : 'expired') : onCompletion('done');
   }
 
   private renderContent = () => {
@@ -79,7 +85,7 @@ class Item extends React.Component<Props> {
       onEdit
     } = this.props;
 
-    const status = this.getStatus(stage, endDate)
+    const status = this.getStatus()
 
     switch (stage) {
       case 'inProgress':

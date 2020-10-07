@@ -12,9 +12,8 @@ interface IProps {
   itemList: Array<{
     id: number,
     task: string,
-    stage: 'inProgress' | 'done' | 'expired',
-    endDate: number | undefined,
-    completionDate: number | undefined }>
+    endDate: number | null,
+    completionDate: number | null }>
 }
 
 interface IState {
@@ -22,8 +21,9 @@ interface IState {
     id: number,
     task: string,
     stage: 'inProgress' | 'done' | 'expired',
-    endDate: number | undefined,
-    completionDate: number | undefined }>
+    isEdit: boolean,
+    endDate: number | null,
+    completionDate: number | null }>
 }
 
 class List extends React.Component<IProps, IState> {
@@ -33,6 +33,19 @@ class List extends React.Component<IProps, IState> {
 
   static defaultProps = {
     itemList: []
+  }
+
+  componentDidMount() {
+    this.setState({
+      itemList: this.props.itemList.map((item) => 
+        ({...item, 
+          stage: item.completionDate
+            ? !item.endDate || item.endDate - item.completionDate > 0
+              ? 'done' 
+              : 'expired'
+            : 'inProgress', 
+          isEdit: false}))
+    })
   }
 
   private deleteTask = (id: number) => {
@@ -84,8 +97,8 @@ class List extends React.Component<IProps, IState> {
         task,
         stage: 'inProgress',
         isEdit: false,
-        completionDate: undefined,
-        endDate: undefined
+        completionDate: null,
+        endDate: null
       }]
     })  
   }
@@ -100,7 +113,7 @@ class List extends React.Component<IProps, IState> {
   public render() {
     return (
       <ul className="list">
-        <li >
+        <li className="list__text-field">
           <Input
             name="create"
             title="Create task"
@@ -139,7 +152,7 @@ class List extends React.Component<IProps, IState> {
               onCompletion={(stage: 'done' | 'expired') => this.setCompletion(item.id, stage)}
               stage={item.stage}
               endDate={item.endDate}
-              completionDate={item.complitionDate}
+              completionDate={item.completionDate}
             >{item.task}</Item>)}
       </ul>
     );
